@@ -3,11 +3,11 @@
 ## Wireframes: ##
 
 #### Index ####
-![wireframe1](./resources/WIREFRAME1.png)
+![wireframe1](./resources/WIREFRAME2.png)
 Opening page with a header (name of the app + logo). Underneath the header there is going to be a banner with the latest fixtures in the CL. I would love to incorporate something like [AJX 4 - 4 CHL] but instead of the team abbreviation a minilogo/icon. However, this can be part of the future features section. Underneath the header I want a box (display: flex) to create a nice overview of all the teams that were/are active in the CL. As soon as you click on one of the logo's the API query should run and return all the details of that team. 
 
 #### Details ####
-![wireframe2](./resources/WIREFRAME2.png)
+![wireframe2](./resources/WIREFRAME1.png)
 To keep everything readible I want the details to be presented on a seperate page. Layout should be something like this. Header with team logo + name. Underneath 2 columns / or 1 aside field + main. Aside will contain team information (headcoach, players, last fixtures, other relevant available info). Main section will contain out of 3 seperate columsn. 1st is going to be used for the Group Stage results and/or overview of upcoming matches (date + opponent). 2nd column will show knock-out phase matches and results or future matches (if known). 3rd column will contain 1/4, 1/2 and Final if your team reaches it. Otherwise, I need some nice placeholder that keeps the frame occupied. Or I could make the columns flex based on available content. 
 
 I've verified if all of this information available. For example, all CL mathches are available in the API. This also provides the ID of the team (e.g. AJAX = 678). An extra API query provides all information of AJAX (all players and their roles, headcoach, teamlogo)
