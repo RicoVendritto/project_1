@@ -1,4 +1,4 @@
-# Working title: "Champions Leauge - Folow your team" #
+# Working title: "Champions League - Follow Your Team" #
 
 ## Wireframes: ##
 
