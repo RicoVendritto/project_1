@@ -10,6 +10,8 @@ Opening page with a header (name of the app + logo). Underneath the header there
 ![wireframe2](./resources/WIREFRAME2.jpg)
 To keep everything readible I want the details to be presented on a seperate page. Layout should be something like this. Header with team logo + name. Underneath 2 columns / or 1 aside field + main. Aside will contain team information (headcoach, players, last fixtures, other relevant available info). Main section will contain out of 3 seperate columsn. 1st is going to be used for the Group Stage results and/or overview of upcoming matches (date + opponent). 2nd column will show knock-out phase matches and results or future matches (if known). 3rd column will contain 1/4, 1/2 and Final if your team reaches it. Otherwise, I need some nice placeholder that keeps the frame occupied. Or I could make the columns flex based on available content. 
 
+I've verified if all of this information available. For example, all CL mathches are available in the API. This also provides the ID of the team (e.g. AJAX = 678). An extra API query provides all information of AJAX (all players and their roles, headcoach, teamlogo)
+
 ## API: ##
 API: https://www.football-data.org/
 
