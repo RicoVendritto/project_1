@@ -79,9 +79,12 @@ function renderResults1(results) {
     teamDiv.setAttribute("class", "teaminfo");
     teamDiv.setAttribute("uniqueID", tempID);
 
+    // onerror="this.src='default-image.jpg';" alt="Missing Image"
+
     let imgThumb = document.createElement("img");
     imgThumb.setAttribute("src", tempLogo);
     imgThumb.setAttribute("class", "clubLogo");
+    imgThumb.setAttribute("onerror", `this.src="images/plain_logo.jpg";`);
     teamDiv.appendChild(imgThumb);
 
     let teamTitle = document.createElement("p");
