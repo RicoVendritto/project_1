@@ -6,8 +6,11 @@ let urlApiClubs = "https://api.football-data.org/v2/teams/";
 // const button = document.querySelector("#grabInput");
 // button.addEventListener("click", processApi);
 const logoDiv = document.querySelector(".logo");
-const logoField = document.querySelector("#teamsCL");
+// const logoField = document.querySelector("#teamsCL");
+const logoField = document.querySelector(".main");
 logoField.addEventListener("click", goGoGo);
+const loader = document.querySelector(".lds-ripple");
+
 
 function processApi(evt) {
   evt.preventDefault();
@@ -57,6 +60,10 @@ async function getAllClubDetails(id) {
 function renderResults1(results) {
   let data = results.data.teams;
   // console.log(data);
+
+  let teamsCL = document.createElement("div");
+  teamsCL.setAttribute("id", "teamsCL");
+
   let i = 0;
   for (key in data) {
     let tempLogo = results.data.teams[i].crestUrl;
@@ -82,10 +89,13 @@ function renderResults1(results) {
     teamTitle.innerHTML = shortName;
     teamDiv.appendChild(teamTitle);
 
-    logoField.appendChild(teamDiv);
+    teamsCL.appendChild(teamDiv);
 
     i++;
   }
+
+  loader.classList.remove("lds-ripple");
+  logoField.appendChild(teamsCL);
 }
 
 // function renderResults2(results) {
