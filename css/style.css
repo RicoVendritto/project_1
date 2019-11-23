@@ -25,7 +25,7 @@ body {
   text-align: center;
   height: 30vh;
   background: rgb(0,0,0);
-  background: linear-gradient(180deg, rgba(0,0,0,1) 80%, rgba(0,212,255,0) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 60%, rgba(255,255,255,0) 100%);
   margin-top: -20px;
 }
 
@@ -34,6 +34,24 @@ h1 {
   font-size: 40px;
   font-weight: 900;
   text-shadow: 1px 1px;
+}
+
+.banner {
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: -50px;
+  height: 5vh;
+  background: black;
+  border-top: 1px white solid;
+  border-bottom: 1px white solid;
+}
+
+#test {
+  color: white;
+  font-weight: 700;
 }
 
 .main {
@@ -79,8 +97,61 @@ h1 {
   align-items: space-between;
 }
 
+.teaminfo {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  padding: 5px;
+  position: relative;
+  transition-duration: ease 0.5s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.teaminfo:hover {
+  background: hsla(0, 0%, 0%, 0.678);
+  border-radius: 5px;
+  color:white;
+}
+
+.teaminfo:after {
+  content: "";
+  background: white;
+  display: block;
+  position: absolute;
+  padding-top: 350%;
+  padding-left: 300%;
+  margin-left: -20px!important;
+  margin-top: -100%;
+  opacity: 0;
+  transition: all 0.8s
+}
+
+.teaminfo:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s
+}
+
 .clubLogo {
   height: 75px;
   width: 75px;
+  transition: ease 1s;
+}
 
+.clubLogo:hover {
+  height: 80px;
+  width: 80px;
+}
+
+.footer {
+  margin-bottom: -20px;
+  height: 30vh;
+  background: rgb(0,0,0);
+  background: linear-gradient(0deg, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 60%, rgba(255,255,255,0) 100%);
 }
