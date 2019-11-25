@@ -42,6 +42,7 @@ Display:
 
 ## Future features: ##
 - Use cookies to save 'your favorite team'
+- Change cursor to a football/soccer ball
 - If a game is played on the day you're visiting:
 -- show fixture in the right upper corner
 -- otherwise show the last result match played by your team
