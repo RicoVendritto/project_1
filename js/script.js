@@ -127,6 +127,7 @@ setInterval(function () {
   if (testNum === num) {
     num + 1;
   }
+  
   testNum = num;
   background.setAttribute("class", `background${num}`);
 }, 5000)
