@@ -160,7 +160,7 @@ h1 {
   transition: 3s;
   margin-bottom: 10vh;
 }
-
+/* 
 .controls {
   display: flex;
   flex-direction: row;
@@ -169,7 +169,7 @@ h1 {
 
 .button {
   width: 100px;
-}
+} */
 
 .logo {
   display: flex;
@@ -292,6 +292,41 @@ h1 {
   font-size: .8em;
   color: blue;
 }
+
+.dailyMatch {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 2vh;
+}
+
+.dailyMatch > h4 {
+  color: blue;
+  font-size: 1em;
+  padding: 2px;
+}
+
+.dailyMatch > .teamDate {
+  color: black;
+  font-size: .8em
+}
+
+.teams {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.homeTeam, .awayTeam {
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 
 .footer {
   position: fixed;

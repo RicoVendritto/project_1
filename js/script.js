@@ -3,6 +3,8 @@ let urlApiCL = "https://api.football-data.org/v2/competitions/CL/matches";
 let urlApiTeams = "https://api.football-data.org/v2/competitions/CL/teams";
 let urlApiClubs = "https://api.football-data.org/v2/teams/";
 
+
+
 let checkPage = document.querySelector("body");
 let checkPageAttribute = checkPage.getAttribute("data-title");
 
@@ -96,8 +98,6 @@ if (checkPageAttribute === "indexPage") {
   }
 
   function goGoGo(evt) {
-    console.log(evt);
-    console.log(evt.target.getAttribute("uniqueID"));
     let id = evt.target.getAttribute("uniqueID");
     getAllClubDetails(id)
   }
@@ -124,6 +124,7 @@ if (checkPageAttribute === "detailsPage") {
   let established = document.querySelector("#founded");
   let competitions = document.querySelector("#competitions");
   let detailsOverview = document.querySelector("#details-overview");
+  let qualifiers = document.querySelector("#qualifiers")
   let groupStage = document.querySelector("#group-stage-progress");
   let knockOut = document.querySelector("#knock-out-progress");
   let final = document.querySelector("#final-progress");
@@ -134,6 +135,7 @@ if (checkPageAttribute === "detailsPage") {
     let params = url.split("=");
     let id = params[1];
     getAllClubDetails(id);
+    getAllMatches(id);
 }
 
   async function getAllClubDetails(id) {
@@ -149,8 +151,19 @@ if (checkPageAttribute === "detailsPage") {
     processDetails(results);
   }
 
+  async function getAllMatches(id) {
+    console.log("Api Matches Call");
+    let teamID = id;
+    let response = await axios.get(`https://api.football-data.org/v2/teams/${teamID}/matches/`, {
+      headers: {
+        'X-Auth-Token': api_key
+      }
+    });
+    const results = response;
+    processMatches(results);
+  }
+
   function processDetails(clubDetails) {
-    console.log(clubDetails.data);
     let data = clubDetails.data;
 
     let address = data.address;
@@ -176,7 +189,6 @@ if (checkPageAttribute === "detailsPage") {
   }
 
   function showCompetitions(comp) {
-    console.log(comp);
     for (let i = 0; i < comp.length; i++) {
       let div = document.createElement("div");
       div.setAttribute("class", "competitions");
@@ -203,6 +215,87 @@ if (checkPageAttribute === "detailsPage") {
     detailsOverview.appendChild(squadOverview);
   }
 
+  function processMatches(results) {
+    let matches = results.data.matches;
+    console.log(matches);
+    console.log(matches.length);
+    let clArrayMatches = [];
+    let clArrayQuali = [];
+    let clArrayGroup = [];
+    for (let i = 0; i < matches.length; i++) {
+      if (matches[i].competition.name === "UEFA Champions League") {
+        clArrayMatches.push(matches[i]);
+        if (/QUALIFYING_ROUND$/.test(matches[i].stage) || matches[i].stage === "PLAY_OFF_ROUND") {
+          clArrayQuali.push(matches[i]);
+        }
+        else if (matches[i].stage === "GROUP_STAGE") {
+          clArrayGroup.push(matches[i]);
+        }
+      }
+    }
+    console.log(clArrayMatches);
+    console.log(clArrayQuali);
+    console.log(clArrayGroup);
+
+    processQualifiers(clArrayQuali);
+    
+  }
+
+  function processQualifiers(matches) {
+    console.log(matches);
+    for (let i = 0; i < matches.length; i++) {
+      let stage = matches[i].stage;
+      let matchDate = matches[i].utcDate;
+      let homeTeam = matches[i].homeTeam.name;
+      let awayTeam = matches[i].awayTeam.name;
+      let homeScore = matches[i].score.fullTime.homeTeam;
+      let awayScore = matches[i].score.fullTime.awayTeam;
+      console.log(`${stage} + ${matchDate} + ${homeTeam} + ${homeScore} + ${awayScore} + ${awayTeam}`);
+
+      let matchOfTheDay = document.createElement("div");
+      matchOfTheDay.setAttribute("class", "dailyMatch");
+      stage = stage.split("_").join(" ");
+
+      let stageTitle = document.createElement("h4");
+      stageTitle.innerHTML = stage;
+      matchOfTheDay.appendChild(stageTitle);
+
+      matchDate = matchDate.split("T");
+      matchDate = matchDate[0];
+
+      let date = document.createElement("p");
+      date.setAttribute("class", "teamDate");
+      date.innerHTML = matchDate;
+      matchOfTheDay.appendChild(date);
+
+      let teams = document.createElement("div");
+      teams.setAttribute("class", "teams");
+
+      let homeTeamDiv = document.createElement("div");
+      homeTeamDiv.setAttribute("class", "homeTeam");
+      let homeTeamName = document.createElement("div");
+      homeTeamName.innerHTML = homeTeam;
+      let homeTeamScore = document.createElement("div");
+      homeTeamScore.innerHTML = homeScore;
+      homeTeamDiv.appendChild(homeTeamName);
+      homeTeamDiv.appendChild(homeTeamScore);
+      teams.appendChild(homeTeamDiv);
+
+      let awayTeamDiv = document.createElement("div");
+      awayTeamDiv.setAttribute("class", "awayTeam");
+      let awayTeamName = document.createElement("div");
+      awayTeamName.innerHTML = awayTeam;
+      let awayTeamScore = document.createElement("div");
+      awayTeamScore.innerHTML = awayScore;
+      awayTeamDiv.appendChild(awayTeamName);
+      awayTeamDiv.appendChild(awayTeamScore);
+      teams.appendChild(awayTeamDiv);
+      
+      matchOfTheDay.appendChild(teams);
+      qualifiers.appendChild(matchOfTheDay);
+    }
+    
+  }
 
   
 } //DON'T REMOVE = SCRIPT ELEMENT TO DEFINE HTML PAGE
