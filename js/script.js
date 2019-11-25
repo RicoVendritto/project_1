@@ -2,12 +2,8 @@ let api_key = "5a350e1523814ab9b993eb2dbb85f264";
 let urlApiCL = "https://api.football-data.org/v2/competitions/CL/matches";
 let urlApiTeams = "https://api.football-data.org/v2/competitions/CL/teams";
 let urlApiClubs = "https://api.football-data.org/v2/teams/";
-
-
-
 let checkPage = document.querySelector("body");
 let checkPageAttribute = checkPage.getAttribute("data-title");
-
 
 /*
 ########## HOMEPAGE ##########
@@ -15,12 +11,10 @@ let checkPageAttribute = checkPage.getAttribute("data-title");
 
 if (checkPageAttribute === "indexPage") {
 
-  const logoDiv = document.querySelector(".logo");
   const logoField = document.querySelector(".main");
-  logoField.addEventListener("click", goGoGo);
   const loader = document.querySelector(".lds-ripple");
   const background = document.querySelector("#background");
-
+  const banner = document.querySelector("#banner");
 
   function processApi(evt) {
     evt.preventDefault();
@@ -30,6 +24,7 @@ if (checkPageAttribute === "indexPage") {
   window.onload = function (evt) {
     evt.preventDefault();
     overviewTeams();
+    getMatchesBanner();
   };
 
   async function overviewTeams() {
@@ -40,7 +35,6 @@ if (checkPageAttribute === "indexPage") {
       }
     });
     const results = response;
-    console.log(results);
     renderResults1(results);
   }
 
@@ -55,17 +49,18 @@ if (checkPageAttribute === "indexPage") {
     //Creating a DIV that contains all the different teams and which is appended to the DOM at the end of the function
     let teamsCL = document.createElement("div");
     teamsCL.setAttribute("id", "teamsCL");
+    teamsCL.addEventListener("click", goGoGo);
 
     let i = 0;
     for (key in data) {
       //retrieve key information from API -> LOGO + TEAM ID + TEAM NAME
-      let tempLogo = results.data.teams[i].crestUrl;
-      let tempID = results.data.teams[i].id;
-      let shortName = results.data.teams[i].shortName;
+      let tempLogo = data[i].crestUrl;
+      let tempID = data[i].id;
+      let shortName = data[i].shortName;
 
       //If no teamlogo available, replace with stock logo
       if (!tempLogo) {
-        tempLogo = "images/plain_logo.jpg";
+        tempLogo = "images/plain_logo.png";
       }
 
       //Create DIV element that contains all information of a specific team
@@ -77,7 +72,7 @@ if (checkPageAttribute === "indexPage") {
       let imgThumb = document.createElement("img");
       imgThumb.setAttribute("src", tempLogo);
       imgThumb.setAttribute("class", "clubLogo");
-      imgThumb.setAttribute("onerror", `this.src="images/plain_logo.jpg";`);
+      imgThumb.setAttribute("onerror", `this.src="images/plain_logo.png";`);
       teamDiv.appendChild(imgThumb);
 
       //Create P element that has teamname in it
@@ -107,8 +102,54 @@ if (checkPageAttribute === "indexPage") {
     background.setAttribute("class", `background${num}`);
   }, 5000)
 
-} //DON'T REMOVE = SCRIPT ELEMENT TO DEFINE HTML PAGE
+  async function getMatchesBanner() {
+    console.log("Api Matches Banner Call");
+    let response = await axios.get(`https://api.football-data.org/v2/competitions/CL/matches/`, {
+      headers: {
+        'X-Auth-Token': api_key
+      }
+    });
+    const results = response.data.matches;
+    // console.log(results2);
+    pushToBanner(results);
+  }
 
+  function pushToBanner(fixtures) {
+    console.log(fixtures);
+    // let lA = fixtures.length;
+    let lA = 150;
+    console.log(lA);
+    for (let i = 1; i <= 10; i++) {
+      let game = document.createElement("div");
+      game.setAttribute("class", "bannerScore");
+      
+      let awayTeamBox = document.createElement("div");
+      awayTeamBox.setAttribute("class", "teamBox");
+      let homeTeamBox = document.createElement("div");
+      homeTeamBox.setAttribute("class", "teamBox");
+
+      let homeTeam = fixtures[lA - i].homeTeam.name;
+      console.log(homeTeam);
+      homeTeamBox.innerHTML += homeTeam;
+      let homeScore = fixtures[lA - i].score.fullTime.homeTeam;
+      console.log(homeScore);
+      homeTeamBox.innerHTML += homeScore;
+
+      let awayTeam = fixtures[lA - i].awayTeam.name;
+      console.log(awayTeam);
+      awayTeamBox.innerHTML += awayTeam;
+      let awayScore = fixtures[lA - i].score.fullTime.awayTeam;
+      console.log(awayScore);
+      awayTeamBox.innerHTML += awayScore;
+      
+      game.appendChild(homeTeamBox);
+      game.appendChild(awayTeamBox);
+
+      banner.appendChild(game);
+    }
+  }
+
+} //DON'T REMOVE = SCRIPT ELEMENT TO DEFINE HTML PAGE
 
 /*
 ########## DETAILSPAGE ##########
@@ -237,12 +278,12 @@ if (checkPageAttribute === "detailsPage") {
     console.log(clArrayQuali);
     console.log(clArrayGroup);
 
-    processQualifiers(clArrayQuali);
-    
+    processQualifiers(clArrayQuali, qualifiers);
+    processQualifiers(clArrayGroup, groupStage);
   }
 
-  function processQualifiers(matches) {
-    console.log(matches);
+  function processQualifiers(matches, fieldOutput) {
+    // console.log(matches);
     for (let i = 0; i < matches.length; i++) {
       let stage = matches[i].stage;
       let matchDate = matches[i].utcDate;
@@ -250,7 +291,7 @@ if (checkPageAttribute === "detailsPage") {
       let awayTeam = matches[i].awayTeam.name;
       let homeScore = matches[i].score.fullTime.homeTeam;
       let awayScore = matches[i].score.fullTime.awayTeam;
-      console.log(`${stage} + ${matchDate} + ${homeTeam} + ${homeScore} + ${awayScore} + ${awayTeam}`);
+      // console.log(`${stage} + ${matchDate} + ${homeTeam} + ${homeScore} + ${awayScore} + ${awayTeam}`);
 
       let matchOfTheDay = document.createElement("div");
       matchOfTheDay.setAttribute("class", "dailyMatch");
@@ -292,10 +333,8 @@ if (checkPageAttribute === "detailsPage") {
       teams.appendChild(awayTeamDiv);
       
       matchOfTheDay.appendChild(teams);
-      qualifiers.appendChild(matchOfTheDay);
+      fieldOutput.appendChild(matchOfTheDay);
     }
-    
   }
 
-  
 } //DON'T REMOVE = SCRIPT ELEMENT TO DEFINE HTML PAGE

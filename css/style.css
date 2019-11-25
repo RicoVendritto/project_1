@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Muli:400,500,600,700,800,900&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Muli:400,500,600,700,800,900&display=swap");
 
 /* * {
   border: red solid 0.5px;
 } */
 
 body {
-  font-family: 'Muli', sans-serif;
+  font-family: "Muli", sans-serif;
   margin: 0 auto;
 }
 
@@ -51,8 +51,14 @@ body {
   align-items: center;
   text-align: center;
   height: 30vh;
-  background: rgb(0,0,0);
-  background: linear-gradient(180deg, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 60%, rgba(255,255,255,0) 100%);
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
   margin-top: -20px;
 }
 
@@ -62,18 +68,18 @@ body {
   justify-content: flex-start;
   align-items: flex-end;
   padding-bottom: 1vh;
-  border-bottom: .5px solid red;
+  border-bottom: 0.5px solid red;
 }
 
-.headerDetails a, 
+.headerDetails a,
 .headerDetails a:visited {
   text-decoration: none;
   position: relative;
-  color:red;
+  color: red;
 }
-.headerDetails a:after, 
+.headerDetails a:after,
 .headerDetails a:visited:after {
-  content: '';
+  content: "";
   height: 3px;
   position: absolute;
   bottom: 0;
@@ -83,25 +89,25 @@ body {
   transition: 0.5s;
 }
 
-.headerDetails a:hover:after, 
+.headerDetails a:hover:after,
 .headerDetails a:visited:hover:after {
   width: 100%;
 }
 
-.headerDetails a.block, 
+.headerDetails a.block,
 .headerDetails a:visited.block {
   display: block;
   padding: 0.5em;
 }
 
-.headerDetails a.block:hover, 
+.headerDetails a.block:hover,
 .headerDetails a:visited.block:hover {
   background: #eee;
 }
 
 .clubLogoDet {
   height: 20vh;
-  margin: 5vh 2vw 0vh 5vh; 
+  margin: 5vh 2vw 0vh 5vh;
 }
 
 h1 {
@@ -123,13 +129,45 @@ h1 {
   width: 100vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  flex-wrap: nowrap;
+  justify-content: center;
   align-items: center;
   margin-top: -50px;
   height: 5vh;
   background: black;
   border-top: 1px white solid;
   border-bottom: 1px white solid;
+}
+
+.banner > .bannerScore {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: .5em;
+  color: white;
+  transform: translateX(100%);
+  animation: bannerResults 20s linear infinite;
+  
+}
+
+.banner > .teamBox {
+  display: flex;
+  flex-direction: column;
+  
+  width: 100%;
+  height: 100%;
+  margin-top: 2vh;
+  /* text-align: center; */
+  
+}
+@keyframes bannerResults {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .randomDetails {
@@ -141,7 +179,9 @@ h1 {
   background: red;
 }
 
-.venue, .founded, .competitions {
+.venue,
+.founded,
+.competitions {
   margin-left: 7vh;
   color: white;
   font-weight: 600;
@@ -246,7 +286,7 @@ h1 {
 .teaminfo:hover {
   background: hsla(0, 0%, 0%, 0.678);
   border-radius: 5px;
-  color:white;
+  color: white;
 }
 
 .teaminfo:after {
@@ -256,17 +296,17 @@ h1 {
   position: absolute;
   padding-top: 350%;
   padding-left: 300%;
-  margin-left: -20px!important;
+  margin-left: -20px !important;
   margin-top: -100%;
   opacity: 0;
-  transition: all 0.8s
+  transition: all 0.8s;
 }
 
 .teaminfo:active:after {
   padding: 0;
   margin: 0;
   opacity: 1;
-  transition: 0s
+  transition: 0s;
 }
 
 .clubLogo {
@@ -289,7 +329,7 @@ h1 {
 }
 
 .club-details {
-  font-size: .8em;
+  font-size: 1em;
   color: blue;
 }
 
@@ -309,7 +349,7 @@ h1 {
 
 .dailyMatch > .teamDate {
   color: black;
-  font-size: .8em
+  font-size: 0.8em;
 }
 
 .teams {
@@ -319,14 +359,14 @@ h1 {
   align-items: center;
 }
 
-.homeTeam, .awayTeam {
+.homeTeam,
+.awayTeam {
   margin: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
 }
-
 
 .footer {
   position: fixed;
@@ -336,6 +376,12 @@ h1 {
   color: white;
   text-align: center;
   height: 15vh;
-  background: rgb(0,0,0);
-  background: linear-gradient(0deg, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 60%, rgba(255,255,255,0) 100%);
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 1) 30%,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
