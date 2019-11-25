@@ -101,7 +101,6 @@ body {
 
 .clubLogoDet {
   height: 20vh;
-  width: 20vw;
   margin: 5vh 2vw 0vh 5vh; 
 }
 
@@ -131,6 +130,22 @@ h1 {
   background: black;
   border-top: 1px white solid;
   border-bottom: 1px white solid;
+}
+
+.randomDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 5vh;
+  background: red;
+}
+
+.venue, .founded, .competitions {
+  margin-left: 7vh;
+  color: white;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
 .test {
@@ -263,6 +278,19 @@ h1 {
 .clubLogo:hover {
   height: 80px;
   width: 80px;
+}
+
+.club-history {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5vh;
+  padding: 2vh;
+}
+
+.club-details {
+  font-size: .8em;
+  color: blue;
 }
 
 .footer {

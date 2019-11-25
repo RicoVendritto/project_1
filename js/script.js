@@ -119,16 +119,20 @@ if (checkPageAttribute === "detailsPage") {
   let clubLogo = document.querySelector("#clubLogo");
   let clubName = document.querySelector("#clubName");
   let clubShortName = document.querySelector("#shortName");
+  let randomDetails = document.querySelector("#randomDetails");
+  let venue = document.querySelector("#venue");
+  let established = document.querySelector("#founded");
+  let competitions = document.querySelector("#competitions");
+  let detailsOverview = document.querySelector("#details-overview");
+  let groupStage = document.querySelector("#group-stage-progress");
+  let knockOut = document.querySelector("#knock-out-progress");
+  let final = document.querySelector("#final-progress");
+
 
   window.onload = function () {
     let url = document.location.href;
-    console.log(url);
-    
     let params = url.split("=");
-    console.log(params);
-
     let id = params[1];
-    console.log(id);
     getAllClubDetails(id);
 }
 
@@ -141,7 +145,7 @@ if (checkPageAttribute === "detailsPage") {
       }
     });
     const results = response;
-    console.log(results);
+    // console.log(results);
     processDetails(results);
   }
 
@@ -157,15 +161,47 @@ if (checkPageAttribute === "detailsPage") {
     let stadium = data.venue;
     let website = data.website;
     let squad = data.squad;
+    let compActive = data.activeCompetitions;
 
     clubLogo.setAttribute("src", logoURL);
     let link = `<a href=${website}>${name}</a>`;
     clubName.innerHTML = link;
     clubShortName.innerHTML = `(${shortName})`;
 
+    venue.innerHTML = `Stadium: ${stadium}`;
+    established.innerHTML = `Founded: ${founded}`;
+
+    showCompetitions(compActive);
+    showPlayerDetails(squad);
   }
 
+  function showCompetitions(comp) {
+    console.log(comp);
+    for (let i = 0; i < comp.length; i++) {
+      let div = document.createElement("div");
+      div.setAttribute("class", "competitions");
+      div.innerHTML = `${comp[i].name}`;
+      randomDetails.appendChild(div);
+    }
+  }
 
+  function showPlayerDetails(squad) {
+    let squadOverview = document.createElement("ul");
+    let manager = `${squad[squad.length - 1].name}`;
+    let role = `${squad[squad.length -1].role}`;
+    let tempManager = document.createElement("li");
+    tempManager.innerHTML = `${manager} - ${role}`;
+    squadOverview.appendChild(tempManager);
+
+    for (let i = 0; i < squad.length -1; i++) {
+      let tempList = document.createElement("li");
+      tempList.innerHTML = squad[i].name;
+      tempList.innerHTML += " - ";
+      tempList.innerHTML += squad[i].position;
+      squadOverview.appendChild(tempList);
+    }
+    detailsOverview.appendChild(squadOverview);
+  }
 
 
   
