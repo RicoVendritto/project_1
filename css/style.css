@@ -18,6 +18,30 @@ body {
   transition: background 3s;
 }
 
+.background1 {
+  background-image: url("../resources/background1.jpg");
+}
+
+.background2 {
+  background-image: url("../resources/background2.jpg");
+}
+
+.background3 {
+  background-image: url("../resources/background3.jpg");
+}
+
+.background4 {
+  background-image: url("../resources/background4.jpg");
+}
+
+.background5 {
+  background-image: url("../resources/background5.jpg");
+}
+
+.background6 {
+  background-image: url("../resources/background6.jpg");
+}
+
 .header {
   display: flex;
   justify-content: space-evenly;

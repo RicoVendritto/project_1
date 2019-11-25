@@ -10,11 +10,12 @@ const logoDiv = document.querySelector(".logo");
 const logoField = document.querySelector(".main");
 logoField.addEventListener("click", goGoGo);
 const loader = document.querySelector(".lds-ripple");
+const background = document.querySelector("#background");
 
 
 function processApi(evt) {
   evt.preventDefault();
-  getAllCompetitions();
+  // getAllCompetitions();
   getAllClubDetails();
 }
 
@@ -34,16 +35,16 @@ async function overviewTeams(evt) {
   renderResults1(results);
 }
 
-async function getAllCompetitions() {
-  console.log("Api CL Call");
-  let response = await axios.get(`https://cors-anywhere.herokuapp.com/${urlApiCL}`, {
-    headers: {
-      'X-Auth-Token': api_key
-    }
-  });
-  const results = response;
-  console.log(results);
-}
+// async function getAllCompetitions() {
+//   console.log("Api CL Call");
+//   let response = await axios.get(`https://cors-anywhere.herokuapp.com/${urlApiCL}`, {
+//     headers: {
+//       'X-Auth-Token': api_key
+//     }
+//   });
+//   const results = response;
+//   console.log(results);
+// }
 
 async function getAllClubDetails(id) {
   console.log("Api Club Call");
@@ -118,3 +119,14 @@ function goGoGo(evt) {
   let id = evt.target.getAttribute("uniqueID");
   getAllClubDetails(id)
 }
+
+setInterval(function () {
+  let testNum = 0;
+  let num = Math.floor(Math.random() * 6 + 1);
+  console.log(num);
+  if (testNum === num) {
+    num + 1;
+  }
+  testNum = num;
+  background.setAttribute("class", `background${num}`);
+}, 5000)
