@@ -22,6 +22,7 @@ if (checkPageAttribute === "indexPage") {
   const favButton = document.querySelector("#favButton");
   favButton.addEventListener("click", setFavorite);
   const footer = document.querySelector("#containerFooter");
+  const footerTitle = document.querySelector("#teamName");
 
   //TRIGGERS 2 FUNCTIONS TO FILL PAGE + BANNER ON WINDOW LOAD
   window.onload = function (evt) {
@@ -56,19 +57,21 @@ if (checkPageAttribute === "indexPage") {
       const favorite = { team: name, id: identifier };
       window.localStorage.setItem('favorite', JSON.stringify(favorite));
     }
+    getLocalStorage();
   }
 
   //RETRIEVE SAVED FAVORITE
   function getLocalStorage() {
     let favorite = JSON.parse(window.localStorage.getItem('favorite'));
     let id = favorite.id;
+    let teamName = favorite.team;
     if (favorite.team !== "Favorite Team") {
-      retrieveFavoriteInfo(id);
+      retrieveFavoriteInfo(id, teamName);
     }
   }
 
   //RETRIEVE LATEST FIXTURES FAVORITE TEAM
-  async function retrieveFavoriteInfo(id) {
+  async function retrieveFavoriteInfo(id, teamName) {
     let teamID = id;
     let response = await axios.get(`https://api.football-data.org/v2/teams/${teamID}/matches/`, {
       headers: {
@@ -82,11 +85,13 @@ if (checkPageAttribute === "indexPage") {
         resultsArray.push(results[results.length - i]);
       }
     }
-    processFavoriteResults(resultsArray);
+    processFavoriteResults(resultsArray, teamName);
   }
 
   //PROCESS LATEST DETAILS FAVORITE TEAM
-  function processFavoriteResults(results) {
+  function processFavoriteResults(results, teamName) {
+    footer.innerHTML = "";
+    footerTitle.innerHTML = `Last results your team, ${teamName}:`;
     results.forEach(results => {
       let homeName = results.homeTeam.name;
       let homeScore = results.score.fullTime.homeTeam;

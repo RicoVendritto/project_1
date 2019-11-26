@@ -145,6 +145,7 @@ body {
   margin: 5vh 2vw 0vh 5vh;
 }
 
+
 h1 {
   color: hsl(0, 100%, 50%);
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -216,6 +217,25 @@ h1 {
   padding-bottom: 1vh;
   background: red;
   height: 3.5vh;
+  animation: randomResults 20s linear infinite;
+}
+
+@keyframes randomResults {
+  0% {
+    background: orange;
+  }
+  25% {
+    background: purple;
+  }
+  50% {
+    background: green;
+  }
+  75% {
+    background: red;
+  }
+  100% {
+    background: orange
+  }
 }
 
 .venue,
@@ -227,39 +247,37 @@ h1 {
   text-transform: capitalize;
 }
 
-.randomDetails a,
+.randomDetails a, 
 .randomDetails a:visited {
   text-decoration: none;
   position: relative;
   color: white;
 }
-.randomDetails a:after,
+.randomDetails a:after, 
 .randomDetails a:visited:after {
-  content: "";
-  height: 3px;
+  content: '';
+  height: 1.5px;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 0%;
-  background: rewhited;
-  transition: 0.5s;
+  background: white;
+  transition: 0.2s;
 }
-
-.randomDetails a:hover:after,
+.randomDetails a:hover:after, 
 .randomDetails a:visited:hover:after {
   width: 100%;
 }
-
-.randomDetails a.block,
+.randomDetails a.block, 
 .randomDetails a:visited.block {
   display: block;
   padding: 0.5em;
 }
-
-.randomDetails a.block:hover,
+.randomDetails a.block:hover, 
 .randomDetails a:visited.block:hover {
-  background: #eeeeee;
+  background: #eee;
 }
+
 
 .main {
   display: flex;
@@ -461,7 +479,7 @@ h1 {
   bottom: 0;
   width: 100%;
   color: white;
-  height: 20vh;
+  height: 23vh;
   background: rgb(255,255,255);
   background: linear-gradient(0deg, 
   rgba(255,255,255,1) 10%, 
@@ -478,11 +496,19 @@ h1 {
   ); */
 }
 
+.teamName {
+  font-weight: 800;
+  color: black;
+  text-align: center;
+  padding-bottom: 2vh;
+  transition: 3s ease;
+}
+
 .containerFooter {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  margin-bottom: 4vh;
+  margin-bottom: 3vh;
 }
 
 .containerFooter > div {
