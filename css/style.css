@@ -11,14 +11,14 @@ body {
 
 #background {
   position: fixed;
-  margin: -25px;
+  margin: 0px;
   width: 120%;
   height: 120%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
-  transition: 5s;
+  transition: 10s;
 }
 
 .background1 {
@@ -45,21 +45,43 @@ body {
   background-image: url("../images/background6.jpeg");
 }
 
+
 .headerMain {
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
-  height: 30vh;
-  background: rgb(0, 0, 0);
+  height: 25vh;
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg,
+  rgba(255,255,255,1) 10%,
+  rgba(255,255,255,1) 30%,
+  rgba(255,255,255,1) 60%,
+  rgba(255,255,255,0) 100%);
+  /* background: rgb(0, 0, 0);
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 1) 10%,
     rgba(0, 0, 0, 1) 30%,
     rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 1) 80%,
     rgba(255, 255, 255, 0) 100%
-  );
-  margin-top: -20px;
+  ); */
+  /* margin-top: 20px; */
+}
+
+.headerMain > h1 {
+  margin: 0 auto;
+}
+
+.headerMain > .favoriteList {
+  margin: 0 auto;
+}
+
+.favoriteList > p {
+  margin: 0 auto;
+  font-weight: 700;
+
 }
 
 .headerDetails {
@@ -112,9 +134,10 @@ body {
 
 h1 {
   color: hsl(0, 100%, 50%);
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   font-size: 40px;
   font-weight: 900;
-  text-shadow: 1px 1px;
+  margin-top: -5vh;
 }
 
 .shortName {
@@ -132,7 +155,7 @@ h1 {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  margin-top: -50px;
+  margin-top: -20px;
   height: 5vh;
   background: black;
   border-top: 1px white solid;
@@ -141,33 +164,34 @@ h1 {
 
 .banner > .bannerScore {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  font-size: .5em;
+  align-content: center;
+  flex-wrap: nowrap;
+  margin-top: 2vh;
+  font-size: .4em;
   color: white;
   transform: translateX(100%);
   animation: bannerResults 20s linear infinite;
-  
 }
 
-.banner > .teamBox {
-  display: flex;
-  flex-direction: column;
-  
-  width: 100%;
-  height: 100%;
-  margin-top: 2vh;
-  /* text-align: center; */
-  
-}
 @keyframes bannerResults {
   0% {
-    transform: translateX(100%);
+    transform: translateX(200%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-200%);
   }
+}
+
+.teamBox {
+  flex-wrap: nowrap;
+  text-align: left;
+  text-justify: center;
+  width: 15vw;
+  line-height: 0%;
+  height: 2vh;
 }
 
 .randomDetails {
@@ -188,11 +212,6 @@ h1 {
   text-transform: capitalize;
 }
 
-.test {
-  color: white;
-  font-weight: 700;
-}
-
 .main {
   display: flex;
   flex-direction: column;
@@ -200,16 +219,6 @@ h1 {
   transition: 3s;
   margin-bottom: 10vh;
 }
-/* 
-.controls {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.button {
-  width: 100px;
-} */
 
 .logo {
   display: flex;
@@ -331,6 +340,21 @@ h1 {
 .club-details {
   font-size: 1em;
   color: blue;
+  background: #B4CBDE;
+  padding: 2vh;
+  border-radius: 5px;
+}
+
+#titleSquad {
+  font-weight: 900;
+  border-bottom: .5px solid black;
+  margin-bottom: 20px;
+}
+
+.qualifiers, .groupstage {
+  background: #B4CBDE;
+  padding: 2vh;
+  border-radius: 5px;
 }
 
 .dailyMatch {
@@ -339,12 +363,16 @@ h1 {
   justify-content: space-evenly;
   align-items: center;
   margin: 2vh;
+  border: white solid .5px;
+  border-radius: 5px;
+  padding: .5vh;
 }
 
 .dailyMatch > h4 {
   color: blue;
   font-size: 1em;
   padding: 2px;
+  
 }
 
 .dailyMatch > .teamDate {
@@ -369,19 +397,41 @@ h1 {
 }
 
 .footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: space-evenly;
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
   color: white;
-  text-align: center;
-  height: 15vh;
-  background: rgb(0, 0, 0);
+  height: 20vh;
+  background: rgb(255,255,255);
+  background: linear-gradient(0deg, 
+  rgba(255,255,255,1) 10%, 
+  rgba(255,255,255,1) 30%, 
+  rgba(255,255,255,1) 60%, 
+  rgba(255,255,255,0) 100%);
+  /* background: rgb(0, 0, 0);
   background: linear-gradient(
     0deg,
     rgba(0, 0, 0, 1) 10%,
     rgba(0, 0, 0, 1) 30%,
     rgba(0, 0, 0, 1) 60%,
     rgba(255, 255, 255, 0) 100%
-  );
+  ); */
 }
+
+.containerFooter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 4vh;
+}
+
+.containerFooter > div {
+  text-align: left;
+  color: black;
+}
+

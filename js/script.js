@@ -4,7 +4,7 @@ let urlApiTeams = "https://api.football-data.org/v2/competitions/CL/teams";
 let urlApiClubs = "https://api.football-data.org/v2/teams/";
 let checkPage = document.querySelector("body");
 let checkPageAttribute = checkPage.getAttribute("data-title");
-
+let heorkuapp = "https://cors-anywhere.herokuapp.com/"
 /*
 ########## HOMEPAGE ##########
 */
@@ -15,34 +15,113 @@ if (checkPageAttribute === "indexPage") {
   const loader = document.querySelector(".lds-ripple");
   const background = document.querySelector("#background");
   const banner = document.querySelector("#banner");
+  const favoriteList = document.querySelector("#teamList");
+  const favButton = document.querySelector("#favButton");
+  favButton.addEventListener("click", setFavorite);
+  const footer = document.querySelector("#containerFooter");
 
-  function processApi(evt) {
-    evt.preventDefault();
-    getAllClubDetails();
-  }
-
+  //TRIGGERS 2 FUNCTIONS TO FILL PAGE + BANNER ON WINDOW LOAD
   window.onload = function (evt) {
     evt.preventDefault();
     overviewTeams();
     getMatchesBanner();
+    getLocalStorage();
   };
 
+  //FILLS THE DROP DOWN FIELD OF FAVORITE TEAMS
+  function fillFavoriteList(results) {
+    let favorites = results.data.teams;
+    let favoritesOrdered = favorites.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    let i = 0;
+    for (keys in favoritesOrdered) {
+      let shortName = favoritesOrdered[i].shortName;
+      let tempID = favoritesOrdered[i].id;
+      let option = document.createElement("option");
+      option.setAttribute("id", tempID);
+      option.innerHTML = shortName;
+      favoriteList.appendChild(option);
+      i++;
+    }
+  }
+
+  //SAVE FAVORITE TO LOCAL STORAGE
+  function setFavorite() {
+    let selection = favoriteList[favoriteList.selectedIndex];
+    if (selection.text !== "Favorite Team") {
+      let name = selection.text;
+      let identifier = selection.getAttribute("id");
+      const favorite = { team: name, id: identifier };
+      window.localStorage.setItem('favorite', JSON.stringify(favorite));
+    }
+  }
+
+  //RETRIEVE SAVED FAVORITE
+  function getLocalStorage() {
+    let favorite = JSON.parse(window.localStorage.getItem('favorite'));
+    let id = favorite.id;
+    if (favorite.team !== "Favorite Team") {
+      retrieveFavoriteInfo(id);
+    }
+  }
+
+  //RETRIEVE LATEST FIXTURES FAVORITE TEAM
+  async function retrieveFavoriteInfo(id) {
+    let teamID = id;
+    let response = await axios.get(`https://api.football-data.org/v2/teams/${teamID}/matches/`, {
+      headers: {
+        'X-Auth-Token': api_key
+      }
+    });
+    const results = response.data.matches;
+    let resultsArray = [];
+    for (let i = 1; resultsArray.length < 4; i++) {
+      if (results[results.length - i].competition.name === "UEFA Champions League" && results[results.length - i].status === "FINISHED") {
+        resultsArray.push(results[results.length - i]);
+      }
+    }
+    processFavoriteResults(resultsArray);
+  }
+
+  //PROCESS LATEST DETAILS FAVORITE TEAM
+  function processFavoriteResults(results) {
+    results.forEach(results => {
+      let homeName = results.homeTeam.name;
+      let homeScore = results.score.fullTime.homeTeam;
+      let awayName = results.awayTeam.name;
+      let awayScore = results.score.fullTime.awayTeam;
+      let stage = results.stage.split("_").join(" ");
+      let date = results.utcDate.split("T");
+      date = date[0];
+      let resultsFavorite = document.createElement("div");
+      let homeTeam = document.createElement("p");
+      let awayTeam = document.createElement("p");
+      homeTeam.innerHTML = `${homeScore} | ${homeName}`;
+      awayTeam.innerHTML = `${awayScore} | ${awayName}`;
+      resultsFavorite.appendChild(homeTeam);
+      resultsFavorite.appendChild(awayTeam);
+      footer.appendChild(resultsFavorite);
+    }
+    )
+  }
+
+  //RETRIEVES INFO FOR THE OVERVIEW OF CLUB ON THE FRONT PAGE
   async function overviewTeams() {
-    console.log("Api CL Teams Call");
-    let response = await axios.get(`https://cors-anywhere.herokuapp.com/${urlApiTeams}`, {
+    let response = await axios.get(`${urlApiTeams}`, {
       headers: {
         'X-Auth-Token': api_key
       }
     });
     const results = response;
     renderResults1(results);
+    fillFavoriteList(results);
   }
 
+  //TRIGGERED BY CLUB LOGO EVENT TRIGGER -> DIRECTS NEW PAGE AND PASSES ID VIA URL
   async function getAllClubDetails(id) {
-    console.log("Api Club Details Call");
     window.location.href = `details.html?id=${id}`;
   }
 
+  //REDERS RESULTS FROM THE OVERVIEWTEAMS FUNCTION
   function renderResults1(results) {
     let data = results.data.teams;
 
@@ -92,58 +171,67 @@ if (checkPageAttribute === "indexPage") {
     logoField.appendChild(teamsCL);
   }
 
+  //CLICK ON CLUB LOGO EVENT TRIGGER
   function goGoGo(evt) {
     let id = evt.target.getAttribute("uniqueID");
     getAllClubDetails(id)
   }
 
+  //LOOPS THROUGH THE BACKGROUNDS
   setInterval(function () {
     let num = Math.floor(Math.random() * 6 + 1);
     background.setAttribute("class", `background${num}`);
-  }, 5000)
+  }, 10000)
 
+  //RETRIEVES GAMES FOR THE BANNER
   async function getMatchesBanner() {
-    console.log("Api Matches Banner Call");
     let response = await axios.get(`https://api.football-data.org/v2/competitions/CL/matches/`, {
       headers: {
         'X-Auth-Token': api_key
       }
     });
     const results = response.data.matches;
-    // console.log(results2);
-    pushToBanner(results);
+    checkBannerData(results);
   }
 
+  //CREATES AN ARRAY OF THE LAST 30 GAMES PLAYED
+  function checkBannerData(fixtures) {
+    let checkedArray = [];
+    let lengthArray = fixtures.length;
+    for (let i = 1; checkedArray.length < 30; i++) {
+      if (fixtures[lengthArray - i].status !== "SCHEDULED") {
+        checkedArray.push(fixtures[lengthArray - i]);
+      }
+    }
+    pushToBanner(checkedArray);
+  }
+
+  //PUSHES THE ARRAY OF LAST 30 GAMES TO THE BANNER
   function pushToBanner(fixtures) {
-    console.log(fixtures);
-    // let lA = fixtures.length;
-    let lA = 150;
-    console.log(lA);
-    for (let i = 1; i <= 10; i++) {
+    let lA = fixtures.length;
+    for (let i = 1; i < lA; i++) {
       let game = document.createElement("div");
       game.setAttribute("class", "bannerScore");
       
-      let awayTeamBox = document.createElement("div");
-      awayTeamBox.setAttribute("class", "teamBox");
-      let homeTeamBox = document.createElement("div");
-      homeTeamBox.setAttribute("class", "teamBox");
+      let topBox = document.createElement("p");
+      topBox.setAttribute("class", "teamBox");
+      let bottomBox = document.createElement("p");
+      bottomBox.setAttribute("class", "teamBox");
 
       let homeTeam = fixtures[lA - i].homeTeam.name;
-      console.log(homeTeam);
-      homeTeamBox.innerHTML += homeTeam;
       let homeScore = fixtures[lA - i].score.fullTime.homeTeam;
-      console.log(homeScore);
-      homeTeamBox.innerHTML += homeScore;
+
+      topBox.innerHTML += homeScore;
+      topBox.innerHTML += " | "+homeTeam;
 
       let awayTeam = fixtures[lA - i].awayTeam.name;
-      console.log(awayTeam);
-      awayTeamBox.innerHTML += awayTeam;
       let awayScore = fixtures[lA - i].score.fullTime.awayTeam;
-      console.log(awayScore);
-      awayTeamBox.innerHTML += awayScore;
+
+      bottomBox.innerHTML += awayScore;
+      bottomBox.innerHTML += " | "+awayTeam;
       
-      game.appendChild(homeTeamBox);
-      game.appendChild(awayTeamBox);
+      game.appendChild(topBox);
+      game.appendChild(bottomBox);
 
       banner.appendChild(game);
     }
@@ -182,13 +270,12 @@ if (checkPageAttribute === "detailsPage") {
   async function getAllClubDetails(id) {
     console.log("Api Club Call");
     let teamID = id;
-    let response = await axios.get(`https://cors-anywhere.herokuapp.com/${urlApiClubs}${teamID}`, {
+    let response = await axios.get(`${urlApiClubs}${teamID}`, {
       headers: {
         'X-Auth-Token': api_key
       }
     });
     const results = response;
-    // console.log(results);
     processDetails(results);
   }
 
@@ -206,8 +293,9 @@ if (checkPageAttribute === "detailsPage") {
 
   function processDetails(clubDetails) {
     let data = clubDetails.data;
-
     let address = data.address;
+    // console.log(address);
+    //WHERE TO FIND THE CLUB
     let logoURL = data.crestUrl;
     let founded = data.founded;
     let name = data.name;
@@ -244,6 +332,7 @@ if (checkPageAttribute === "detailsPage") {
     let role = `${squad[squad.length -1].role}`;
     let tempManager = document.createElement("li");
     tempManager.innerHTML = `${manager} - ${role}`;
+    squadOverview.innerHTML = "<span id='titleSquad'>SQUAD</span>";
     squadOverview.appendChild(tempManager);
 
     for (let i = 0; i < squad.length -1; i++) {
@@ -259,7 +348,6 @@ if (checkPageAttribute === "detailsPage") {
   function processMatches(results) {
     let matches = results.data.matches;
     console.log(matches);
-    console.log(matches.length);
     let clArrayMatches = [];
     let clArrayQuali = [];
     let clArrayGroup = [];
@@ -274,15 +362,12 @@ if (checkPageAttribute === "detailsPage") {
         }
       }
     }
-    console.log(clArrayMatches);
-    console.log(clArrayQuali);
-    console.log(clArrayGroup);
 
-    processQualifiers(clArrayQuali, qualifiers);
-    processQualifiers(clArrayGroup, groupStage);
+    renderMatches(clArrayQuali, qualifiers);
+    renderMatches(clArrayGroup, groupStage);
   }
 
-  function processQualifiers(matches, fieldOutput) {
+  function renderMatches(matches, fieldOutput) {
     // console.log(matches);
     for (let i = 0; i < matches.length; i++) {
       let stage = matches[i].stage;
