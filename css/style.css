@@ -504,6 +504,12 @@ h1 {
   transition: 3s ease;
 }
 
+#favTeam {
+  color: red;
+  font-weight: 900;
+  text-decoration: underline;
+}
+
 .containerFooter {
   display: flex;
   flex-direction: row;

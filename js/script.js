@@ -91,7 +91,7 @@ if (checkPageAttribute === "indexPage") {
   //PROCESS LATEST DETAILS FAVORITE TEAM
   function processFavoriteResults(results, teamName) {
     footer.innerHTML = "";
-    footerTitle.innerHTML = `Last results your team, ${teamName}:`;
+    footerTitle.innerHTML = `Last results your team, <span id=favTeam>${teamName}</span>:`;
     results.forEach(results => {
       let homeName = results.homeTeam.name;
       let homeScore = results.score.fullTime.homeTeam;
