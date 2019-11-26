@@ -9,16 +9,27 @@ body {
   margin: 0 auto;
 }
 
-#background {
+#backgroundIndex {
   position: fixed;
   margin: 0px;
-  width: 120%;
-  height: 120%;
+  width: 100%;
+  height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   z-index: -1;
   transition: 10s;
+}
+
+#backgroundDetails {
+  position: fixed;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
 }
 
 .background1 {
@@ -45,6 +56,9 @@ body {
   background-image: url("../images/background6.jpeg");
 }
 
+.background-details {
+  background-image: url("../images/background_details.jpeg");
+}
 
 .headerMain {
   display: flex;
@@ -90,7 +104,6 @@ body {
   justify-content: flex-start;
   align-items: flex-end;
   padding-bottom: 1vh;
-  border-bottom: 0.5px solid red;
 }
 
 .headerDetails a,
@@ -143,6 +156,7 @@ h1 {
 .shortName {
   margin-left: 2vw;
   color: hsl(0, 100%, 50%);
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   font-size: 20px;
   font-weight: 600;
   text-shadow: 0.5px 0.5px;
@@ -198,9 +212,10 @@ h1 {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
-  height: 5vh;
+  align-items: flex-end;
+  padding-bottom: 1vh;
   background: red;
+  height: 3.5vh;
 }
 
 .venue,
@@ -210,6 +225,40 @@ h1 {
   color: white;
   font-weight: 600;
   text-transform: capitalize;
+}
+
+.randomDetails a,
+.randomDetails a:visited {
+  text-decoration: none;
+  position: relative;
+  color: white;
+}
+.randomDetails a:after,
+.randomDetails a:visited:after {
+  content: "";
+  height: 3px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  background: rewhited;
+  transition: 0.5s;
+}
+
+.randomDetails a:hover:after,
+.randomDetails a:visited:hover:after {
+  width: 100%;
+}
+
+.randomDetails a.block,
+.randomDetails a:visited.block {
+  display: block;
+  padding: 0.5em;
+}
+
+.randomDetails a.block:hover,
+.randomDetails a:visited.block:hover {
+  background: #eeeeee;
 }
 
 .main {
@@ -332,58 +381,64 @@ h1 {
 .club-history {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-left;
   margin: 5vh;
   padding: 2vh;
+}
+.clubcolumn {
+  margin: 2vh;
 }
 
 .club-details {
   font-size: 1em;
-  color: blue;
-  background: #B4CBDE;
+  color: green;
+  background: hsla(206, 19%, 87%, 0.8);
   padding: 2vh;
   border-radius: 5px;
 }
 
 #titleSquad {
   font-weight: 900;
-  border-bottom: .5px solid black;
+  color: red;
+  border-bottom: .5px solid red;
   margin-bottom: 20px;
 }
 
-.qualifiers, .groupstage {
-  background: #B4CBDE;
-  padding: 2vh;
+.qualifiers, .groupstage, .knockout, .final {
+  /* background: #B4CBDE; */
+  background: hsla(206, 19%, 87%, 0.8);
   border-radius: 5px;
 }
 
 .dailyMatch {
   display: flex;
+  color: green;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   margin: 2vh;
-  border: white solid .5px;
+  border: green solid .5px;
   border-radius: 5px;
   padding: .5vh;
 }
 
 .dailyMatch > h4 {
-  color: blue;
+  color: red;
+  font-weight: 500;
   font-size: 1em;
-  padding: 2px;
+  padding: 1vh;
   
 }
 
 .dailyMatch > .teamDate {
-  color: black;
+  color: green;
   font-size: 0.8em;
 }
 
 .teams {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }
 
@@ -392,7 +447,7 @@ h1 {
   margin: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 }
 

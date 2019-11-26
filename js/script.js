@@ -13,7 +13,7 @@ if (checkPageAttribute === "indexPage") {
 
   const logoField = document.querySelector(".main");
   const loader = document.querySelector(".lds-ripple");
-  const background = document.querySelector("#background");
+  const background = document.querySelector("#backgroundIndex");
   const banner = document.querySelector("#banner");
   const favoriteList = document.querySelector("#teamList");
   const favButton = document.querySelector("#favButton");
@@ -240,7 +240,7 @@ if (checkPageAttribute === "indexPage") {
 } //DON'T REMOVE = SCRIPT ELEMENT TO DEFINE HTML PAGE
 
 /*
-########## DETAILSPAGE ##########
+#################### DETAILSPAGE ####################
 */
 
 if (checkPageAttribute === "detailsPage") {
@@ -268,7 +268,6 @@ if (checkPageAttribute === "detailsPage") {
 }
 
   async function getAllClubDetails(id) {
-    console.log("Api Club Call");
     let teamID = id;
     let response = await axios.get(`${urlApiClubs}${teamID}`, {
       headers: {
@@ -276,11 +275,11 @@ if (checkPageAttribute === "detailsPage") {
       }
     });
     const results = response;
+    console.log(results);
     processDetails(results);
   }
 
   async function getAllMatches(id) {
-    console.log("Api Matches Call");
     let teamID = id;
     let response = await axios.get(`https://api.football-data.org/v2/teams/${teamID}/matches/`, {
       headers: {
@@ -304,17 +303,24 @@ if (checkPageAttribute === "detailsPage") {
     let website = data.website;
     let squad = data.squad;
     let compActive = data.activeCompetitions;
+    let colors = data.clubColors;
 
     clubLogo.setAttribute("src", logoURL);
-    let link = `<a href=${website}>${name}</a>`;
+    clubLogo.setAttribute("onerror", `this.src="images/plain_logo.png";`);
+    let link = `<a class="clubName" target="_blank" href=${website}>${name}</a>`;
     clubName.innerHTML = link;
     clubShortName.innerHTML = `(${shortName})`;
 
-    venue.innerHTML = `Stadium: ${stadium}`;
+    address = address.split(" ").join("+");
+    address = `https://www.google.com/maps/search/${address}`;
+    address = `<a class="clubName" target="_blank" href=${address}>${stadium}</a>`;
+    venue.innerHTML = `Stadium: ${address}`;
+    // venue.innerHTML = `Stadium: <a class="venueLink" href=${address} target="_blank">${stadium}</a>`;
     established.innerHTML = `Founded: ${founded}`;
 
     showCompetitions(compActive);
     showPlayerDetails(squad);
+    // setLayout(colors);
   }
 
   function showCompetitions(comp) {
@@ -332,7 +338,7 @@ if (checkPageAttribute === "detailsPage") {
     let role = `${squad[squad.length -1].role}`;
     let tempManager = document.createElement("li");
     tempManager.innerHTML = `${manager} - ${role}`;
-    squadOverview.innerHTML = "<span id='titleSquad'>SQUAD</span>";
+    squadOverview.innerHTML = "<p id='titleSquad'>SQUAD</p>";
     squadOverview.appendChild(tempManager);
 
     for (let i = 0; i < squad.length -1; i++) {
@@ -347,7 +353,6 @@ if (checkPageAttribute === "detailsPage") {
 
   function processMatches(results) {
     let matches = results.data.matches;
-    console.log(matches);
     let clArrayMatches = [];
     let clArrayQuali = [];
     let clArrayGroup = [];
@@ -421,5 +426,29 @@ if (checkPageAttribute === "detailsPage") {
       fieldOutput.appendChild(matchOfTheDay);
     }
   }
+
+  // function setLayout(colors) {
+  //   colors = colors.split("/");
+  //   console.log(colors);
+
+  //   let color1 = colors[0].trim();
+  //   color1 = color1.split(" ");
+  //   color1 = color1[1];
+    
+  //   let color2 = colors[1].trim();
+  //   color2 = color2.split(" ");
+  //   color2 = color2[1];
+
+  //   console.log(`|${color1}|`);
+  //   console.log(`|${color2}|`);
+    
+  //   let headers = document.querySelectorAll(".clubName");
+  //   headers.forEach(header => {
+  //     header.style.color = color1;
+  //   })
+  //   // .style.color = color1;
+  //   document.querySelector("#shortName").style.color = color1;
+  //   document.querySelector("#randomDetails").style.background = color2;
+  // }
 
 } //DON'T REMOVE = SCRIPT ELEMENT TO DEFINE HTML PAGE
