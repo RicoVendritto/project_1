@@ -5,6 +5,9 @@ let urlApiClubs = "https://api.football-data.org/v2/teams/";
 let checkPage = document.querySelector("body");
 let checkPageAttribute = checkPage.getAttribute("data-title");
 let heorkuapp = "https://cors-anywhere.herokuapp.com/"
+let unsplashAccessKey = "2d29cb7d7c65817ea67ddca64f1129e03a6fd4bf7096ac91005ecaf81a6c085f";
+let unsplashSecretKey = "339bec64b97398f6ba376cc1575b4bdd01f54e4c234a7c830199b6a89581593a";
+let unsplashEndPoint = "https://source.unsplash.com/featured/?";
 /*
 ########## HOMEPAGE ##########
 */
@@ -275,7 +278,6 @@ if (checkPageAttribute === "detailsPage") {
       }
     });
     const results = response;
-    console.log(results);
     processDetails(results);
   }
 
@@ -293,8 +295,6 @@ if (checkPageAttribute === "detailsPage") {
   function processDetails(clubDetails) {
     let data = clubDetails.data;
     let address = data.address;
-    // console.log(address);
-    //WHERE TO FIND THE CLUB
     let logoURL = data.crestUrl;
     let founded = data.founded;
     let name = data.name;
@@ -315,12 +315,12 @@ if (checkPageAttribute === "detailsPage") {
     address = `https://www.google.com/maps/search/${address}`;
     address = `<a class="clubName" target="_blank" href=${address}>${stadium}</a>`;
     venue.innerHTML = `Stadium: ${address}`;
-    // venue.innerHTML = `Stadium: <a class="venueLink" href=${address} target="_blank">${stadium}</a>`;
     established.innerHTML = `Founded: ${founded}`;
 
     showCompetitions(compActive);
     showPlayerDetails(squad);
     // setLayout(colors);
+    // relevantPhoto(shortName);
   }
 
   function showCompetitions(comp) {
@@ -356,6 +356,8 @@ if (checkPageAttribute === "detailsPage") {
     let clArrayMatches = [];
     let clArrayQuali = [];
     let clArrayGroup = [];
+    let clArrayKnockOut = [];
+    let clArrayFinal = [];
     for (let i = 0; i < matches.length; i++) {
       if (matches[i].competition.name === "UEFA Champions League") {
         clArrayMatches.push(matches[i]);
@@ -365,11 +367,29 @@ if (checkPageAttribute === "detailsPage") {
         else if (matches[i].stage === "GROUP_STAGE") {
           clArrayGroup.push(matches[i]);
         }
+        else if (matches[i].stage === "ROUND_OF_16" || matches[i].stage === "QUARTER_FINALS") {
+          clArrayKnockOut.push(matches[i]);
+        } else if (matches[i].stage === "SEMI_FINALS" || matches[i].stage === "FINAL") {
+          clArrayFinal.push(matches[i]); 
+        }
       }
     }
 
+    // ###### POSSIBLE STAGES OF THE TOURNAMENT ######
+    // "1ST_QUALIFYING_ROUND",
+    // "2ND_QUALIFYING_ROUND",
+    // "3RD_QUALIFYING_ROUND",
+    // "PLAY_OFF_ROUND",
+    // "GROUP_STAGE",
+    // "ROUND_OF_16",
+    // "QUARTER_FINALS",
+    // "SEMI_FINALS",
+    // "FINAL"
+
     renderMatches(clArrayQuali, qualifiers);
     renderMatches(clArrayGroup, groupStage);
+    renderMatches(clArrayKnockOut, knockOut);
+    renderMatches(clArrayFinal, final);
   }
 
   function renderMatches(matches, fieldOutput) {
@@ -426,6 +446,18 @@ if (checkPageAttribute === "detailsPage") {
       fieldOutput.appendChild(matchOfTheDay);
     }
   }
+
+  // async function relevantPhoto(name) {
+  //   let searchKey = name;
+  //   let response = await axios.get(`${unsplashEndPoint}${searchKey}`, {
+  //     headers: {
+  //       'Authorization': unsplashAccessKey
+  //     }
+  //   });
+  //   const results = response;
+  //   console.log(results);
+  // }
+
 
   // function setLayout(colors) {
   //   colors = colors.split("/");
