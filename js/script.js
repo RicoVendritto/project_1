@@ -2,12 +2,13 @@ let api_key = "5a350e1523814ab9b993eb2dbb85f264";
 let urlApiCL = "https://api.football-data.org/v2/competitions/CL/matches";
 let urlApiTeams = "https://api.football-data.org/v2/competitions/CL/teams";
 let urlApiClubs = "https://api.football-data.org/v2/teams/";
+let urlApiMatch = "https://api.football-data.org/v2/matches/";
 let checkPage = document.querySelector("body");
 let checkPageAttribute = checkPage.getAttribute("data-title");
 let heorkuapp = "https://cors-anywhere.herokuapp.com/"
-let unsplashAccessKey = "2d29cb7d7c65817ea67ddca64f1129e03a6fd4bf7096ac91005ecaf81a6c085f";
-let unsplashSecretKey = "339bec64b97398f6ba376cc1575b4bdd01f54e4c234a7c830199b6a89581593a";
-let unsplashEndPoint = "https://source.unsplash.com/featured/?";
+// let unsplashAccessKey = "2d29cb7d7c65817ea67ddca64f1129e03a6fd4bf7096ac91005ecaf81a6c085f";
+// let unsplashSecretKey = "339bec64b97398f6ba376cc1575b4bdd01f54e4c234a7c830199b6a89581593a";
+// let unsplashEndPoint = "https://source.unsplash.com/featured/?";
 /*
 ########## HOMEPAGE ##########
 */
@@ -262,10 +263,17 @@ if (checkPageAttribute === "detailsPage") {
   let competitions = document.querySelector("#competitions");
   let detailsOverview = document.querySelector("#details-overview");
   let qualifiers = document.querySelector("#qualifiers")
+  qualifiers.addEventListener("click", showMatchDetails);
   let groupStage = document.querySelector("#group-stage-progress");
+  groupStage.addEventListener("click", showMatchDetails);
   let knockOut = document.querySelector("#knock-out-progress");
+  knockOut.addEventListener("click", showMatchDetails);
   let final = document.querySelector("#final-progress");
-
+  final.addEventListener("click", showMatchDetails);
+  let overlay = document.querySelector("#overlay");
+  let overlayDetails = document.querySelector("#overlayDetails");
+  let closeButton = document.querySelector("#closeButton");
+  closeButton.addEventListener("click", overlayOff);
 
   window.onload = function () {
     let url = document.location.href;
@@ -400,6 +408,8 @@ if (checkPageAttribute === "detailsPage") {
   function renderMatches(matches, fieldOutput) {
     // console.log(matches);
     for (let i = 0; i < matches.length; i++) {
+      // console.log(matches);
+      let matchId = matches[i].id;
       let stage = matches[i].stage;
       let matchDate = matches[i].utcDate;
       let homeTeam = matches[i].homeTeam.name;
@@ -410,9 +420,11 @@ if (checkPageAttribute === "detailsPage") {
 
       let matchOfTheDay = document.createElement("div");
       matchOfTheDay.setAttribute("class", "dailyMatch");
+      matchOfTheDay.setAttribute("gameID", matchId);
       stage = stage.split("_").join(" ");
 
       let stageTitle = document.createElement("h4");
+      stageTitle.setAttribute("gameID", matchId);
       stageTitle.innerHTML = stage;
       matchOfTheDay.appendChild(stageTitle);
 
@@ -420,38 +432,150 @@ if (checkPageAttribute === "detailsPage") {
       matchDate = matchDate[0];
 
       let date = document.createElement("p");
+      date.setAttribute("gameID", matchId);
       date.setAttribute("class", "teamDate");
       date.innerHTML = matchDate;
       matchOfTheDay.appendChild(date);
 
       let teams = document.createElement("div");
+      teams.setAttribute("gameID", matchId);
       teams.setAttribute("class", "teams");
 
       let homeTeamDiv = document.createElement("div");
+      homeTeamDiv.setAttribute("gameID", matchId);
       homeTeamDiv.setAttribute("class", "homeTeam");
       let homeTeamName = document.createElement("div");
+      homeTeamName.setAttribute("gameID", matchId);
       homeTeamName.innerHTML = homeTeam;
       let homeTeamScore = document.createElement("div");
+      homeTeamScore.setAttribute("gameID", matchId);
       homeTeamScore.innerHTML = homeScore;
       homeTeamDiv.appendChild(homeTeamName);
       homeTeamDiv.appendChild(homeTeamScore);
       teams.appendChild(homeTeamDiv);
 
       let awayTeamDiv = document.createElement("div");
+      awayTeamDiv.setAttribute("gameID", matchId);
       awayTeamDiv.setAttribute("class", "awayTeam");
       let awayTeamName = document.createElement("div");
+      awayTeamName.setAttribute("gameID", matchId);
       awayTeamName.innerHTML = awayTeam;
       let awayTeamScore = document.createElement("div");
+      awayTeamScore.setAttribute("gameID", matchId);
       awayTeamScore.innerHTML = awayScore;
       awayTeamDiv.appendChild(awayTeamName);
       awayTeamDiv.appendChild(awayTeamScore);
       teams.appendChild(awayTeamDiv);
       
       matchOfTheDay.appendChild(teams);
+      fieldOutput.setAttribute("gameID", matchId);
       fieldOutput.appendChild(matchOfTheDay);
     }
   }
 
+  async function showMatchDetails(id) {
+    let teamID = id.target.getAttribute("gameID");
+    let response = await axios.get(`${urlApiMatch}${teamID}`, {
+      headers: {
+        'X-Auth-Token': api_key
+      }
+    });
+    const results = response.data.match;
+    renderMatchDetails(results)
+  }
+
+  function renderMatchDetails(details) {
+    console.log(details);
+    overlayDetails.innerHTML = "";
+    overlayOn();
+    let competitionName = details.competition.name;
+    let stage = details.stage;
+    stage = stage.split("_").join(" ");
+    stage = stage.toLowerCase();
+    let competitionGroup = details.group;
+    let venue = details.venue;
+    let matchDate = details.utcDate;
+    matchDate = matchDate.split("T");
+    matchDate = matchDate[0];
+    matchDate = matchDate.split("-").reverse();
+    matchDate = matchDate.join("-");
+    let referees = details.referees;
+    let refArray = [];
+    referees.forEach(ref => {
+      refArray.push(ref.name);
+    })
+    let homeTeam = details.homeTeam.name;
+    let awayTeam = details.awayTeam.name;
+    let scoreExtraTime = details.score.extraTime;
+    let scoreFullTime = details.score.fullTime;
+    let scoreHalfTime = details.score.halfTime;
+    let scorePenalties = details.score.penalties;
+    let scoreWinner = details.score.winner;
+
+    let matchDetailsOverview = document.createElement("div");
+    matchDetailsOverview.classList.add("matchDetailsOverlay");
+    let competitionHeader = document.createElement("h2");
+    competitionHeader.innerHTML = competitionName;
+
+    let matchGeneralInfo = document.createElement("div");
+    matchGeneralInfo.classList.add("matchGeneralInfo");
+
+    let competitionStage = document.createElement("div");
+    competitionStage.classList.add("competitionStage");
+    competitionStage.innerHTML = stage;
+    if (competitionGroup !== null) {
+      competitionStage.innerHTML += " - " + competitionGroup;
+    }
+    
+    let gameDate = document.createElement("div");
+    gameDate.innerHTML = matchDate;
+
+    let gameVenue = document.createElement("div");
+    gameVenue.innerHTML = venue;
+
+    matchGeneralInfo.appendChild(competitionStage);
+    matchGeneralInfo.appendChild(gameDate);
+    matchGeneralInfo.appendChild(gameVenue);
+
+    let gameRef = document.createElement("div");
+    gameRef.classList.add("gameRef");
+    let refTitle = document.createElement("div");
+    refTitle.classList.add("refTitle");
+    refTitle.innerHTML = "Referees";
+    let refNames = document.createElement("div");
+    refNames.classList.add("refNames");
+    refArray.forEach(name => {
+      refNames.innerHTML += "<div>"+name+"<div>";
+    })
+
+    gameRef.appendChild(refTitle);
+    gameRef.appendChild(refNames);
+
+    let gameTeams = document.createElement("div");
+    gameTeams.classList.add("gameTeams");
+    let homeTeamDiv = document.createElement("div");
+    homeTeamDiv.innerHTML = homeTeam;
+    let awayTeamDiv = document.createElement("div");
+    awayTeamDiv.innerHTML = awayTeam;
+    gameTeams.appendChild(homeTeamDiv);
+    gameTeams.appendChild(awayTeamDiv);
+
+    
+
+    matchDetailsOverview.appendChild(competitionHeader);
+    matchDetailsOverview.appendChild(matchGeneralInfo);
+    matchDetailsOverview.appendChild(gameRef);
+    matchDetailsOverview.appendChild(gameTeams);
+    overlayDetails.appendChild(matchDetailsOverview);
+  }
+
+  function overlayOn() {
+    document.getElementById("overlay").style.display = "block";
+  }
+  
+  function overlayOff() {
+    document.getElementById("overlay").style.display = "none";
+  }
   // async function relevantPhoto(name) {
   //   let searchKey = name;
   //   let response = await axios.get(`${unsplashEndPoint}${searchKey}`, {
