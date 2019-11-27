@@ -214,9 +214,8 @@ h1 {
 .randomDetails {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-end;
-  padding-bottom: 1vh;
+  justify-content: space-around;
+  align-items: center;
   background: red;
   height: 3.5vh;
   animation: randomResults 20s linear infinite;
@@ -243,7 +242,7 @@ h1 {
 .venue,
 .founded,
 .competitions {
-  margin-left: 7vh;
+  /* margin-left: 7vh; */
   color: white;
   font-weight: 600;
   text-transform: capitalize;
@@ -338,7 +337,7 @@ h1 {
   border: white 1px solid;
   border-radius: 15px;
   background: rgba(255, 255, 255, 0.7);
-  margin: 40px 50px;
+  margin: 4vh 3vw 8vh 3vw;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

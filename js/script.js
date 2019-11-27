@@ -35,7 +35,7 @@ if (checkPageAttribute === "indexPage") {
   //FILLS THE DROP DOWN FIELD OF FAVORITE TEAMS
   function fillFavoriteList(results) {
     let favorites = results.data.teams;
-    let favoritesOrdered = favorites.sort((a, b) => (a.name > b.name) ? 1 : -1);
+    let favoritesOrdered = favorites.sort((a, b) => (a.shortName > b.shortName) ? 1 : -1);
     let i = 0;
     for (keys in favoritesOrdered) {
       let shortName = favoritesOrdered[i].shortName;
