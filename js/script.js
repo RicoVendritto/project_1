@@ -560,7 +560,24 @@ if (checkPageAttribute === "detailsPage") {
     gameTeams.appendChild(homeTeamDiv);
     gameTeams.appendChild(awayTeamDiv);
 
+    console.log(scoreExtraTime)
+    console.log(scoreFullTime)
+    console.log(scoreHalfTime)
+    console.log(scorePenalties)
+    console.log(scoreWinner)
+
+    let scores = document.createElement("div");
+    scores.classList.add("scores");
+    let extraTimeDiv = document.createElement("div");
+    if (scoreExtraTime.homeTeam !== null) {
+      extraTimeDiv.innerHTML = scoreExtraTime.homeTeam;
+      extraTimeDiv.innerHTML += " ET " + scoreExtraTime.awayTeam;
+    }
     
+    let fullTimeDiv = document.createElement("div");
+    let halfTimeDiv = document.createElement("div");
+    let penaltiesDiv = document.createElement("div");
+    let winnerDiv = document.createElement("div");
 
     matchDetailsOverview.appendChild(competitionHeader);
     matchDetailsOverview.appendChild(matchGeneralInfo);
