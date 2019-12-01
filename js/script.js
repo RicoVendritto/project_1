@@ -56,7 +56,7 @@ if (checkPageAttribute === "indexPage") {
   //SAVE FAVORITE TO LOCAL STORAGE
   function setFavorite() {
     let selection = favoriteList[favoriteList.selectedIndex];
-    if (selection.text !== "Favorite Team") {
+    if (selection.text !== "Choose Team") {
       let name = selection.text;
       let identifier = selection.getAttribute("id");
       const favorite = { team: name, id: identifier };
@@ -130,7 +130,7 @@ if (checkPageAttribute === "indexPage") {
   }
 
   //TRIGGERED BY CLUB LOGO EVENT TRIGGER -> DIRECTS NEW PAGE AND PASSES ID VIA URL
-  async function getAllClubDetails(id) {
+  function getAllClubDetails(id) {
     window.location.href = `details.html?id=${id}`;
   }
 
@@ -142,6 +142,7 @@ if (checkPageAttribute === "indexPage") {
     let teamsCL = document.createElement("div");
     teamsCL.setAttribute("id", "teamsCL");
     teamsCL.addEventListener("click", goGoGo);
+    teamsCL.addEventListener("touchend", goGoGo, false);
 
     let i = 0;
     for (key in data) {
@@ -165,11 +166,13 @@ if (checkPageAttribute === "indexPage") {
       imgThumb.setAttribute("src", tempLogo);
       imgThumb.setAttribute("class", "clubLogo");
       imgThumb.setAttribute("onerror", `this.src="images/plain_logo.png";`);
+      imgThumb.setAttribute("uniqueID", tempID);
       teamDiv.appendChild(imgThumb);
 
       //Create P element that has teamname in it
       let teamTitle = document.createElement("p");
       teamTitle.setAttribute("class", "teamname");
+      teamTitle.setAttribute("uniqueID", tempID);
       teamTitle.innerHTML = shortName;
       teamDiv.appendChild(teamTitle);
 
@@ -186,8 +189,9 @@ if (checkPageAttribute === "indexPage") {
 
   //CLICK ON CLUB LOGO EVENT TRIGGER
   function goGoGo(evt) {
+    console.log(evt);
     let id = evt.target.getAttribute("uniqueID");
-    getAllClubDetails(id)
+    getAllClubDetails(id);
   }
 
   //LOOPS THROUGH THE BACKGROUNDS
@@ -362,7 +366,8 @@ if (checkPageAttribute === "detailsPage") {
   function showPlayerDetails(squad) {
     let squadOverview = document.createElement("ul");
     let manager = `${squad[squad.length - 1].name}`;
-    let role = `${squad[squad.length -1].role}`;
+    let role = `${squad[squad.length - 1].role}`;
+    role = role.split("_").join(" ").toLowerCase();
     let tempManager = document.createElement("li");
     tempManager.innerHTML = `${manager} - ${role}`;
     squadOverview.innerHTML = "<p id='titleSquad'>SQUAD</p>";
