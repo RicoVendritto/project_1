@@ -401,7 +401,7 @@ h1 {
   display: flex;
   flex-direction: row;
   justify-content: flex-left;
-  margin: 5vh;
+  margin: 2vh 5vh;
   padding: 2vh;
 }
 .clubcolumn {
@@ -607,11 +607,49 @@ h1 {
 .gameTeams {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-top: 2vh;
+  width: 100%;
 }
 
 .gameTeams div {
-  width: 20vw;
+  /* width: 20vw; */
   border: 1px red solid;
+}
+
+.matchScores {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2vh;
+  margin: 2vh;
+}
+
+.fixtures {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.news-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1vh 5vh;
+  padding: 2vh;
+}
+
+.articles {
+  width: 20vw;
+  height: 20vw;
+  border: red solid .5px;
+  margin: 2vh;
+  padding: 2vh;
+  font-size: 1em;
+  color: green;
+  background: hsla(206, 19%, 87%, 0.8);
+  border-radius: 5px;
 }

@@ -6,6 +6,9 @@ let urlApiMatch = "https://api.football-data.org/v2/matches/";
 let checkPage = document.querySelector("body");
 let checkPageAttribute = checkPage.getAttribute("data-title");
 let heorkuapp = "https://cors-anywhere.herokuapp.com/"
+let newsApiUrl = "https://newsapi.org/v2/everything?q=";
+let newsApiKey = "&language=en&sortBy=popularity&apiKey=435facf767354bfebae88c73975746e7";
+
 // let unsplashAccessKey = "2d29cb7d7c65817ea67ddca64f1129e03a6fd4bf7096ac91005ecaf81a6c085f";
 // let unsplashSecretKey = "339bec64b97398f6ba376cc1575b4bdd01f54e4c234a7c830199b6a89581593a";
 // let unsplashEndPoint = "https://source.unsplash.com/featured/?";
@@ -332,6 +335,7 @@ if (checkPageAttribute === "detailsPage") {
 
     showCompetitions(compActive);
     showPlayerDetails(squad);
+    getLatestNews(shortName);
     // setLayout(colors);
     // relevantPhoto(shortName);
   }
@@ -511,6 +515,7 @@ if (checkPageAttribute === "detailsPage") {
     let scoreHalfTime = details.score.halfTime;
     let scorePenalties = details.score.penalties;
     let scoreWinner = details.score.winner;
+    scoreWinner = scoreWinner.split("_").join(" ").toLowerCase();
 
     let matchDetailsOverview = document.createElement("div");
     matchDetailsOverview.classList.add("matchDetailsOverlay");
@@ -566,23 +571,78 @@ if (checkPageAttribute === "detailsPage") {
     console.log(scorePenalties)
     console.log(scoreWinner)
 
+    let matchScores = document.createElement("div");
+    matchScores.classList.add("matchScores");
     let scores = document.createElement("div");
     scores.classList.add("scores");
     let extraTimeDiv = document.createElement("div");
+    extraTimeDiv.classList.add("fixtures");
     if (scoreExtraTime.homeTeam !== null) {
-      extraTimeDiv.innerHTML = scoreExtraTime.homeTeam;
-      extraTimeDiv.innerHTML += " ET " + scoreExtraTime.awayTeam;
+      let extraTimeHomeTeam = document.createElement("div");
+      extraTimeHomeTeam.innerHTML = scoreExtraTime.homeTeam;
+      let extraTimeSep = document.createElement("div");
+      extraTimeSep.innerHTML = " ET ";
+      let extraTimeAwayTeam = document.createElement("div");
+      extraTimeAwayTeam.innerHTML = scoreExtraTime.awayTeam;
     }
     
     let fullTimeDiv = document.createElement("div");
+    fullTimeDiv.classList.add("fixtures");
+    if (scoreFullTime.homeTeam !== null) {
+      let fullTimeHomeTeam = document.createElement("div");
+      fullTimeHomeTeam.innerHTML = scoreFullTime.homeTeam;
+      fullTimeDiv.appendChild(fullTimeHomeTeam);
+      let fullTimeSep = document.createElement("div");
+      fullTimeSep.innerHTML = " FT ";
+      fullTimeDiv.appendChild(fullTimeSep);
+      let fullTimeAwayTeam = document.createElement("div");
+      fullTimeAwayTeam.innerHTML = scoreFullTime.awayTeam;
+      fullTimeDiv.appendChild(fullTimeAwayTeam);
+    }
+
     let halfTimeDiv = document.createElement("div");
+    halfTimeDiv.classList.add("fixtures");
+    if (scoreHalfTime.homeTeam !== null) {
+      let halfTimeHomeTeam = document.createElement("div");
+      halfTimeHomeTeam.innerHTML = scoreHalfTime.homeTeam;
+      halfTimeDiv.appendChild(halfTimeHomeTeam);
+      let halfTimeSep = document.createElement("div");
+      halfTimeSep.innerHTML = " HT ";
+      halfTimeDiv.appendChild(halfTimeSep);
+      let halfTimeAwayTeam = document.createElement("div");
+      halfTimeAwayTeam.innerHTML = scoreHalfTime.awayTeam;
+      halfTimeDiv.appendChild(halfTimeAwayTeam);
+    }
+
     let penaltiesDiv = document.createElement("div");
+    penaltiesDiv.classList.add("fixtures");
+    if (scorePenalties.homeTeam !== null) {
+      let penaltiesHomeTeam = document.createElement("div");
+      penaltiesHomeTeam.innerHTML = scorePenalties.homeTeam;
+      penaltiesDiv.appendChild(penaltiesHomeTeam);
+      let penaltiesSep = document.createElement("div");
+      penaltiesSep.innerHTML = " PT ";
+      penaltiesDiv.appendChild(penaltiesSep);
+      let penaltiesAwayTeam = document.createElement("div");
+      penaltiesAwayTeam.innerHTML = scorePenalties.awayTeam;
+      penaltiesDiv.appendChild(penaltiesAwayTeam);
+    }
+
     let winnerDiv = document.createElement("div");
+    winnerDiv.classList.add("fixtures");
+    winnerDiv.innerHTML = scoreWinner;
+
+    matchScores.appendChild(extraTimeDiv);
+    matchScores.appendChild(fullTimeDiv);
+    matchScores.appendChild(halfTimeDiv);
+    matchScores.appendChild(penaltiesDiv);
+    matchScores.appendChild(winnerDiv);
 
     matchDetailsOverview.appendChild(competitionHeader);
     matchDetailsOverview.appendChild(matchGeneralInfo);
     matchDetailsOverview.appendChild(gameRef);
     matchDetailsOverview.appendChild(gameTeams);
+    matchDetailsOverview.appendChild(matchScores);
     overlayDetails.appendChild(matchDetailsOverview);
   }
 
@@ -593,6 +653,18 @@ if (checkPageAttribute === "detailsPage") {
   function overlayOff() {
     document.getElementById("overlay").style.display = "none";
   }
+
+  async function getLatestNews(club) {
+    // let newsApiUrl = "https://newsapi.org/v2/everything?q=";
+    // let newsApiKey = "&apiKey=435facf767354bfebae88c73975746e7";
+    // heorkuapp
+    let teamName = `${club}%20Champions%20League`;
+    console.log(teamName);
+    let response = await axios.get(`${newsApiUrl}${teamName}${newsApiKey}`);
+    const results = response;
+    console.log(results);
+  }
+
   // async function relevantPhoto(name) {
   //   let searchKey = name;
   //   let response = await axios.get(`${unsplashEndPoint}${searchKey}`, {
