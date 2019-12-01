@@ -12,6 +12,7 @@ let newsApiKey = "&language=en&sortBy=popularity&apiKey=435facf767354bfebae88c73
 // let unsplashAccessKey = "2d29cb7d7c65817ea67ddca64f1129e03a6fd4bf7096ac91005ecaf81a6c085f";
 // let unsplashSecretKey = "339bec64b97398f6ba376cc1575b4bdd01f54e4c234a7c830199b6a89581593a";
 // let unsplashEndPoint = "https://source.unsplash.com/featured/?";
+
 /*
 ########## HOMEPAGE ##########
 */
@@ -278,14 +279,17 @@ if (checkPageAttribute === "detailsPage") {
   let closeButton = document.querySelector("#closeButton");
   closeButton.addEventListener("click", overlayOff);
 
+  //Triggers 2 functions that retrieve club and match details 
+  //based on the ID which is extracted from the URL
   window.onload = function () {
     let url = document.location.href;
     let params = url.split("=");
     let id = params[1];
     getAllClubDetails(id);
     getAllMatches(id);
-}
+  }
 
+  //Run api request to retrieve club details and pass through to process results
   async function getAllClubDetails(id) {
     let teamID = id;
     let response = await axios.get(`${urlApiClubs}${teamID}`, {
@@ -297,6 +301,7 @@ if (checkPageAttribute === "detailsPage") {
     processDetails(results);
   }
 
+  //Run api request to retrieve match details of club and pass through to process
   async function getAllMatches(id) {
     let teamID = id;
     let response = await axios.get(`https://api.football-data.org/v2/teams/${teamID}/matches/`, {
@@ -308,6 +313,7 @@ if (checkPageAttribute === "detailsPage") {
     processMatches(results);
   }
 
+  //Process key information from the club to present on the page
   function processDetails(clubDetails) {
     let data = clubDetails.data;
     let address = data.address;
@@ -333,13 +339,16 @@ if (checkPageAttribute === "detailsPage") {
     venue.innerHTML = `Stadium: ${address}`;
     established.innerHTML = `Founded: ${founded}`;
 
+    //Additional functions that run based on info that is extracted from
+    //club information and to have it rendered nicely on the details page.
     showCompetitions(compActive);
     showPlayerDetails(squad);
-    getLatestNews(shortName);
+    getLatestNews(name);
     // setLayout(colors);
     // relevantPhoto(shortName);
   }
 
+  //Shows in which competitions the club is active (domestic & international)
   function showCompetitions(comp) {
     for (let i = 0; i < comp.length; i++) {
       let div = document.createElement("div");
@@ -349,6 +358,7 @@ if (checkPageAttribute === "detailsPage") {
     }
   }
 
+  //Renders a complete list of all the players and their role, plus the manager
   function showPlayerDetails(squad) {
     let squadOverview = document.createElement("ul");
     let manager = `${squad[squad.length - 1].name}`;
@@ -368,6 +378,8 @@ if (checkPageAttribute === "detailsPage") {
     detailsOverview.appendChild(squadOverview);
   }
 
+  //Renders an overview of all the matches so far played in the CL and the ones
+  //that are still planned for this round including their opposition
   function processMatches(results) {
     let matches = results.data.matches;
     let clArrayMatches = [];
@@ -403,12 +415,16 @@ if (checkPageAttribute === "detailsPage") {
     // "SEMI_FINALS",
     // "FINAL"
 
+    //One function can render all results based on the stage as 2 arguments
+    //are passed to the function.
     renderMatches(clArrayQuali, qualifiers);
     renderMatches(clArrayGroup, groupStage);
     renderMatches(clArrayKnockOut, knockOut);
     renderMatches(clArrayFinal, final);
   }
 
+  //Uses two parameters to process an array of matches and present them in
+  //the correct output field on the page (pre-defined HTML elements)
   function renderMatches(matches, fieldOutput) {
     // console.log(matches);
     for (let i = 0; i < matches.length; i++) {
@@ -477,6 +493,7 @@ if (checkPageAttribute === "detailsPage") {
     }
   }
 
+  //API request that runs to present match details
   async function showMatchDetails(id) {
     let teamID = id.target.getAttribute("gameID");
     let response = await axios.get(`${urlApiMatch}${teamID}`, {
@@ -488,6 +505,8 @@ if (checkPageAttribute === "detailsPage") {
     renderMatchDetails(results)
   }
 
+  //Renders match details and makes them available in the overlay
+  //Also triggers the overlay function to make this visible on the page.
   function renderMatchDetails(details) {
     console.log(details);
     overlayDetails.innerHTML = "";
@@ -565,12 +584,6 @@ if (checkPageAttribute === "detailsPage") {
     gameTeams.appendChild(homeTeamDiv);
     gameTeams.appendChild(awayTeamDiv);
 
-    console.log(scoreExtraTime)
-    console.log(scoreFullTime)
-    console.log(scoreHalfTime)
-    console.log(scorePenalties)
-    console.log(scoreWinner)
-
     let matchScores = document.createElement("div");
     matchScores.classList.add("matchScores");
     let scores = document.createElement("div");
@@ -646,23 +659,51 @@ if (checkPageAttribute === "detailsPage") {
     overlayDetails.appendChild(matchDetailsOverview);
   }
 
+  //Function to make overlay visible
   function overlayOn() {
     document.getElementById("overlay").style.display = "block";
   }
   
+  //Function to make overlay invisible
   function overlayOff() {
     document.getElementById("overlay").style.display = "none";
   }
 
+  //API request to retrieve latest news available based on clubname
   async function getLatestNews(club) {
-    // let newsApiUrl = "https://newsapi.org/v2/everything?q=";
-    // let newsApiKey = "&apiKey=435facf767354bfebae88c73975746e7";
-    // heorkuapp
     let teamName = `${club}%20Champions%20League`;
+    // let teamName = club;
     console.log(teamName);
     let response = await axios.get(`${newsApiUrl}${teamName}${newsApiKey}`);
-    const results = response;
-    console.log(results);
+    const results = response.data.articles;
+    renderArticles(results);
+  }
+
+  //Render results API News request and show last 3 articles including links
+  //and background photos.
+  function renderArticles(articles) {
+    console.log(articles);
+    for (let i = 0; i < 3; i++) {
+      let articleTitle = articles[i].title;
+      // let articleDesc = articles[i].description;
+      let articleImage = articles[i].urlToImage;
+      let articleUrl = articles[i].url;
+      let articleSource = articles[i].source.name;
+
+      let articleFrame = document.querySelector(`#articles${i}`);
+      articleFrame.style.background = `url("${articleImage}")`;
+      articleFrame.style.backgroundRepeat = "no-repeat";
+      articleFrame.style.backgroundSize = "cover";
+
+      let articleTitleDiv = document.createElement("div");
+      articleTitleDiv.innerHTML = `<a href="${articleUrl}" target="_blank">${articleTitle}</a>`;
+      articleFrame.appendChild(articleTitleDiv);
+
+      let sourceFrame = document.querySelector(`#source${i}`);
+      let sourceDiv = document.createElement("div");
+      sourceDiv.innerHTML = `Source: ${articleSource} via newsapi.org`;
+      sourceFrame.appendChild(sourceDiv);
+    }
   }
 
   // async function relevantPhoto(name) {

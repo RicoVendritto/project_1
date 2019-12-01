@@ -25,9 +25,9 @@ body {
 
 #backgroundDetails {
   position: fixed;
-  margin: 0px;
-  width: 100%;
-  height: 100%;
+  margin: -1vh -1vw;
+  width: 110%;
+  height: 110%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -216,9 +216,9 @@ h1 {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  background: red;
+  background: black;
   height: 3.5vh;
-  animation: randomResults 20s linear infinite;
+  /* animation: randomResults 20s linear infinite; */
 }
 
 @keyframes randomResults {
@@ -405,15 +405,15 @@ h1 {
   padding: 2vh;
 }
 .clubcolumn {
+  font-size: 1em;
+  color: black;
   margin: 2vh;
+  background: hsla(206, 19%, 87%, 0.8);
+  border-radius: 5px;
 }
 
 .club-details {
-  font-size: 1em;
-  color: green;
-  background: hsla(206, 19%, 87%, 0.8);
   padding: 2vh;
-  border-radius: 5px;
 }
 
 #titleSquad {
@@ -423,20 +423,14 @@ h1 {
   margin-bottom: 20px;
 }
 
-.qualifiers, .groupstage, .knockout, .final {
-  /* background: #B4CBDE; */
-  background: hsla(206, 19%, 87%, 0.8);
-  border-radius: 5px;
-}
-
 .dailyMatch {
   display: flex;
-  color: green;
+  color: black;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   margin: 2vh;
-  border: green solid .5px;
+  border: black solid .5px;
   border-radius: 5px;
   padding: .5vh;
 }
@@ -449,14 +443,13 @@ h1 {
 
 .dailyMatch > h4 {
   color: red;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 1em;
   padding: 1vh;
   
 }
 
 .dailyMatch > .teamDate {
-  color: green;
   font-size: 0.8em;
 }
 
@@ -612,11 +605,6 @@ h1 {
   width: 100%;
 }
 
-.gameTeams div {
-  /* width: 20vw; */
-  border: 1px red solid;
-}
-
 .matchScores {
   display: flex;
   flex-direction: column;
@@ -638,18 +626,76 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 1vh 5vh;
-  padding: 2vh;
+  margin: 1vh 5vh 0 5vh;
+  padding: 2vh 2vh 0 2vh;
 }
 
 .articles {
-  width: 20vw;
-  height: 20vw;
-  border: red solid .5px;
-  margin: 2vh;
-  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 35vw;
+  height: 25vh;
+  border: white solid .5px;
+  border-radius: 15px 15px 0px 0px;
+  margin: 0 1vh 0 1vh;
+  padding: 1vh 1vh 1vh 1vh;
   font-size: 1em;
-  color: green;
-  background: hsla(206, 19%, 87%, 0.8);
+  /* background: hsla(206, 19%, 87%, 0.8); */
+  /* background: url("https://image.businessinsider.com/5dc93df87eece546fd73cf33?width=1200&format=jpeg"); */
+  /* background-repeat: no-repeat; */
+  /* background-size: 100%; */
   border-radius: 5px;
+}
+
+.articles > div > a {
+  text-decoration: none;
+  color: black;
+}
+
+.articles > div > a:hover {
+  color: white;
+}
+
+.articles > div {
+  background: hsla(206, 19%, 87%, 0.6);
+  color: black;
+  border-radius: 5px;
+  padding: 1vh;
+}
+
+.articles > div:hover {
+  background: hsla(210, 2%, 18%, 0.9);
+  color: white;
+  border-radius: 5px;
+  padding: 1vh;
+}
+
+.news-source {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 5vh 1vh 5vh;
+  padding: 0 2vh 2vh 2vh;
+}
+
+.source {
+  position: relative;
+  top: -0.3vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 35vw;
+  height: 3vh;
+  font-size: .5em;
+  margin: 0 1vh 0 1vh;
+  padding: 0 1vh 0 1vh;
+  border-radius: 0px 0px 5px 5px;
+  /* border: .5px solid red; */
+  background: hsla(206, 19%, 87%, 0.8);
+  color: black;
+  z-index: 0;
 }
