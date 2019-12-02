@@ -433,7 +433,7 @@ if (checkPageAttribute === "detailsPage") {
   function renderMatches(matches, fieldOutput) {
     // console.log(matches);
     for (let i = 0; i < matches.length; i++) {
-      // console.log(matches);
+      console.log(matches);
       let matchId = matches[i].id;
       let stage = matches[i].stage;
       let matchDate = matches[i].utcDate;
